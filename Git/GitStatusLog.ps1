@@ -1,4 +1,4 @@
-$folderToCheck = ""
+$folderToCheck = "C:\Projects"
 $secondTimeOut = 60
 
 $i = 1
@@ -35,11 +35,11 @@ while ($i -eq 1) {
 
 			if ($commit) {
 				if ($add -Or $unstage) {
-					Write-Host $file "with" $commit "to pull" -fore Red
+					Write-Host $file "with" $commit "to pull" -fore Magenta
 				}
 				else {
 					if ($push) {
-						Write-Host $file "with" $commit "to pull" -fore Orange
+						Write-Host $file "with" $commit "to pull" -fore Red
 					}
 					else {
 						Write-Host $file "with" $commit "to pull" -fore Green
@@ -48,16 +48,17 @@ while ($i -eq 1) {
 			}
 			else {
 				if ($add -Or $unstage) {
-					Write-Host $file -fore Red
+					Write-Host $file -fore Magenta
 				}
 				else {
 					if ($push) {
-						Write-Host $file -fore Orange
+						Write-Host $file -fore Red
 					}
 				}
 			}
 		}
 	}
-	Write-Host "#####################################################################################################################################################################" -fore Yellow
+			   
+	Write-Host "###################################################### $(Get-Date -Format "HH:mm") ######################################################" -fore Yellow
 	start-sleep -Seconds $secondTimeOut
 }
