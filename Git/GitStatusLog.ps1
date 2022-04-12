@@ -9,6 +9,11 @@ while ($i -eq 1) {
 		git fetch *> $null
 
 		$commit = git status | sls "commits," | Out-String
+		$clean = git status | sls $cleanMessagge
+		$add = git status | sls "add"
+		$unstage = git status | sls "unstaged"
+		$push = git status | sls "push"
+		$stage = git status | sls "Changes to be committed"
 
 		if ($commit) {
 			$commit = $commit.ToString().Substring($commit.IndexOf("by") + 3)
@@ -23,17 +28,17 @@ while ($i -eq 1) {
 			}
 		}
 
-		if (git status | sls $cleanMessagge) {
+		if ($clean) {
 			if ($commit -And -not($commit.Contains("nothing"))) {
 				Write-Host $file "with" $commit "to pull" -fore Green
 			}
+			else {
+				if ($push) {
+						Write-Host $file -fore Red
+				}
+			}
 		}
 		else {
-			$add = git status | sls "add"
-			$unstage = git status | sls "unstaged"
-			$push = git status | sls "push"
-			$stage = git status | sls "Changes to be committed"
-
 			if ($commit) {
 				if ($add -Or $unstage -Or $stage) {
 					Write-Host $file "with" $commit "to pull" -fore Magenta
