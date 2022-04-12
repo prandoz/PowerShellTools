@@ -32,9 +32,10 @@ while ($i -eq 1) {
 			$add = git status | sls "add"
 			$unstage = git status | sls "unstaged"
 			$push = git status | sls "push"
+			$stage = git status | sls "Changes to be committed"
 
 			if ($commit) {
-				if ($add -Or $unstage) {
+				if ($add -Or $unstage -Or $stage) {
 					Write-Host $file "with" $commit "to pull" -fore Magenta
 				}
 				else {
@@ -47,7 +48,7 @@ while ($i -eq 1) {
 				}
 			}
 			else {
-				if ($add -Or $unstage) {
+				if ($add -Or $unstage -Or $stage) {
 					Write-Host $file -fore Magenta
 				}
 				else {
