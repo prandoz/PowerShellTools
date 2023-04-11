@@ -1,3 +1,8 @@
+## [v1.2.0] - 2023-04-11
+### Added
+ - GitPull.sh
+ - Get directory parameter
+
 ## [v1.1.0] - 2023-02-07
 ### Added
  - How to install and configure OhMyPosh on PowerShell

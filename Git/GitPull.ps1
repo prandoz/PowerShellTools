@@ -1,4 +1,5 @@
 Function Init {
+	
 	$secondTimeOut = 60
 
 	$i = 1
@@ -24,10 +25,7 @@ Function Check {
 	$notGitRepository = $status -like $notGitRepositoryMessagge
 	$commit = $status | sls "commits," | Out-String
 	$clean = $status | sls $cleanMessagge
-	$add = $status | sls "add"
-	$unstage = $status | sls "unstaged"
-	$push = $status | sls "push"
-	$stage = $status | sls "Changes to be committed"
+
 
 	if(-Not $notGitRepository) {
 		if ($commit) {
@@ -42,41 +40,11 @@ Function Check {
 				$commit = $commit.Substring(0, $commit.IndexOf("commit") + 6)
 			}
 		}
-
-		if ($clean) {
-			if ($commit -And -not($commit.Contains("nothing"))) {
-				Write-Host $directory "with" $commit "to pull" -fore Green
-			}
-			else {
-				if ($push) {
-						Write-Host $directory -fore Red
-				}
-			}
-		}
-		else {
-			if ($commit) {
-				if ($add -Or $unstage -Or $stage) {
-					Write-Host $directory "with" $commit "to pull" -fore Magenta
-				}
-				else {
-					if ($push) {
-						Write-Host $directory "with" $commit "to pull" -fore Red
-					}
-					else {
-						Write-Host $directory "with" $commit "to pull" -fore Green
-					}
-				}
-			}
-			else {
-				if ($add -Or $unstage -Or $stage) {
-					Write-Host $directory -fore Magenta
-				}
-				else {
-					if ($push) {
-						Write-Host $directory -fore Red
-					}
-				}
-			}
+		
+		if ($clean -And $commit -And -not($commit.Contains("nothing"))) {
+			git pull
+			Write-Host $directory "with" $commit "to pull" -fore Green
+			Write-Host $directory "with" $commit "to pull" -fore Green
 		}
 	}
 	else {
@@ -87,7 +55,7 @@ Function Check {
 }
 
 if(-Not($args[0])) {
-	Write-Host "Folder parameter to check not found!" -fore Red
+	Write-Host "Folder parameter to pull not found!" -fore Red
 	Exit
 }
 
